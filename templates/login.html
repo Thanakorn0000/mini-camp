@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>เข้าสู่ระบบพนักงานโกดัง</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .login-container {
+            max-width: 350px;
+            margin: 4em auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px #0001;
+            padding: 2em;
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 1.5em;
+        }
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+        .login-container select, .login-container input[type="submit"] {
+            padding: 0.7em;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .error-msg {
+            color: red;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>เข้าสู่ระบบพนักงานโกดัง</h2>
+        {% if error %}
+            <div class="error-msg">{{ error }}</div>
+        {% endif %}
+        <form action="/login" method="post">
+            <label for="username">เลือกชื่อพนักงาน</label>
+            <select name="username" id="username" required>
+                <option value="">-- เลือกชื่อ --</option>
+                {% for user in users %}
+                <option value="{{ user }}">{{ user }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="เข้าสู่ระบบ">
+        </form>
+    </div>
+</body>
+</html>

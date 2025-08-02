@@ -1,23 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Todo App</title>
+    <title>ระบบเช็คสต็อกสินค้า</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        table th, table td {
+            padding: 0.7em 1.5em;
+            text-align: center;
+            vertical-align: middle;
+        }
+        table th {
+            background: #f0f0f0;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0 0.5em;
+        }
+        .container form {
+            margin-bottom: 2em;
+        }
+        /* จัดปุ่มใน td ให้อยู่ตรงกลางและเรียงแนวนอน */
+        .action-buttons {
+            display: flex;
+            gap: 0.5em;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-    <h1>Simple Todo App</h1>
-
-    <form action="/create-todo" method="post">
-        <input type="text" name="item" placeholder="Enter a new todo" required>
-        <button type="submit">Add</button>
-    </form>
-
-    <h2>Todo List:</h2>
-    <ul>
-        {% for todo in todos %}
-            <li>{{ todo }}</li>
-        {% else %}
-            <li>No todos yet!</li>
-        {% endfor %}
-    </ul>
+    <nav>
+        <a href="/">หน้าโกดัง</a>
+        <a href="/about">เกี่ยวกับเรา</a>
+        <a href="/contact">ติดต่อ</a>
+    </nav>
+    <div class="container">
+        <h1>สต็อกสินค้าในโกดัง</h1>
+        <form action="/add-product" method="post" style="display:flex;gap:1em;">
+            <input type="text" name="name" required placeholder="ชื่อสินค้า" style="flex:2;">
+            <input type="number" name="quantity" required min="0" placeholder="จำนวน" style="flex:1;">
+            <input type="submit" value="เพิ่มสินค้า">
+        </form>
+        <table style="width:100%;margin-top:2em;">
+            <tr>
+                <th>ชื่อสินค้า</th>
+                <th>จำนวนคงเหลือ</th>
+                <th>แก้ไข</th>
+                <th>ลบ</th>
+            </tr>
+            {% for p in products %}
+            <tr id="product-{{p.id}}">
+                <td>
+                    <span class="product-name" title="ชื่อสินค้า: {{ p.name }}">{{ p.name }}</span>
+                    <input type="text" class="edit-name" value="{{ p.name }}" style="display:none;width:90%;" title="ชื่อสินค้า: {{ p.name }}">
+                </td>
+                <td>
+                    <span class="product-qty" title="จำนวนคงเหลือของ {{ p.name }}">{{ p.quantity }}</span>
+                    <input type="number" class="edit-qty" value="{{ p.quantity }}" style="display:none;width:60px;" title="จำนวนคงเหลือของ {{ p.name }}">
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <button type="button" onclick="startEdit({{p.id}})">แก้ไข</button>
+                        <button type="button" onclick="saveEdit({{p.id}})" style="display:none;">บันทึก</button>
+                        <button type="button" onclick="cancelEdit({{p.id}})" style="display:none;">ยกเลิก</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <button type="button" onclick="deleteProduct({{p.id}})">ลบ</button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <script>
+    function deleteProduct(id) {
+        fetch('/delete-product', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'id=' + id
+        }).then(res => {
+            if(res.ok) location.reload();
+        });
+    }
+    function startEdit(id) {
+        const tr = document.getElementById('product-' + id);
+        tr.querySelector('.product-name').style.display = 'none';
+        tr.querySelector('.product-qty').style.display = 'none';
+        tr.querySelector('.edit-name').style.display = '';
+        tr.querySelector('.edit-qty').style.display = '';
+        const buttons = tr.querySelectorAll('.action-buttons')[0].querySelectorAll('button');
+        buttons[0].style.display = 'none'; // edit
+        buttons[1].style.display = '';     // save
+        buttons[2].style.display = '';     // cancel
+    }
+    function saveEdit(id) {
+        const tr = document.getElementById('product-' + id);
+        const name = tr.querySelector('.edit-name').value;
+        const qty = tr.querySelector('.edit-qty').value;
+        fetch('/update-product', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'id=' + id + '&name=' + encodeURIComponent(name) + '&quantity=' + encodeURIComponent(qty)
+        }).then(res => {
+            if(res.ok) location.reload();
+        });
+    }
+    function cancelEdit(id) {
+        const tr = document.getElementById('product-' + id);
+        tr.querySelector('.product-name').style.display = '';
+        tr.querySelector('.product-qty').style.display = '';
+        tr.querySelector('.edit-name').style.display = 'none';
+        tr.querySelector('.edit-qty').style.display = 'none';
+        const buttons = tr.querySelectorAll('.action-buttons')[0].querySelectorAll('button');
+        buttons[0].style.display = ''; // edit
+        buttons[1].style.display = 'none'; // save
+        buttons[2].style.display = 'none'; // cancel
+    }
+    </script>
 </body>
 </html>

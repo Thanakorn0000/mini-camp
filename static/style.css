@@ -1,0 +1,70 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(120deg, #f0f4ff 0%, #e0eaff 100%);
+    margin: 0;
+    padding: 0;
+}
+nav {
+    background: #2d3e50;
+    padding: 1em;
+    text-align: center;
+}
+nav a {
+    color: #fff;
+    margin: 0 1em;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+nav a:hover {
+    color: #ffb347;
+}
+.container {
+    max-width: 600px;
+    margin: 2em auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px #0001;
+    padding: 2em;
+    animation: fadeIn 1s;
+}
+h1 {
+    color: #2d3e50;
+    text-align: center;
+}
+button, input[type="submit"] {
+    background: #2d3e50;
+    color: #fff;
+    border: none;
+    padding: 0.5em 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+button:hover, input[type="submit"]:hover {
+    background: #ffb347;
+    color: #2d3e50;
+    transform: scale(1.05);
+}
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    border-bottom: 1px solid #eee;
+    animation: slideIn 0.5s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(40px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-40px);}
+    to { opacity: 1; transform: translateX(0);}
+}
+.success-msg {
+    color: green;
+    text-align: center;
+    margin-bottom: 1em;
+}
