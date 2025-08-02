@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+</head>
+<body>
+    <h1>Simple Todo App</h1>
+
+    <form action="/create-todo" method="post">
+        <input type="text" name="item" placeholder="Enter a new todo" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <h2>Todo List:</h2>
+    <ul>
+        {% for todo in todos %}
+            <li>{{ todo }}</li>
+        {% else %}
+            <li>No todos yet!</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
