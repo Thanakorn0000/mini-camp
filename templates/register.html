@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>เข้าสู่ระบบพนักงานโกดัง</title>
+    <title>สมัครสมาชิกพนักงานโกดัง</title>
     <link rel="stylesheet" href="/static/style.css">
     <style>
         body {
@@ -87,19 +87,19 @@
 
 <body>
     <div class="auth-container">
-        <h2>เข้าสู่ระบบ</h2>
+        <h2>สมัครสมาชิก</h2>
         {% if error %}
         <div class="error-msg">{{ error }}</div>
         {% endif %}
-        <form action="/login" method="post">
+        <form action="/register" method="post">
             <label for="username">ชื่อผู้ใช้</label>
             <input type="text" name="username" id="username" required placeholder="ชื่อผู้ใช้">
             <label for="password">รหัสผ่าน</label>
             <input type="password" name="password" id="password" required placeholder="รหัสผ่าน">
-            <input type="submit" value="เข้าสู่ระบบ">
+            <input type="submit" value="สมัครสมาชิก">
         </form>
         <div class="switch-link">
-            ยังไม่มีบัญชี? <a href="/register">สมัครสมาชิก</a>
+            มีบัญชีอยู่แล้ว? <a href="/login">เข้าสู่ระบบ</a>
         </div>
     </div>
 </body>
